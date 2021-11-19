@@ -50,12 +50,12 @@ snap install code --classic
 # fi
 
 echo ""
-echo -n "是否要安装 Serial 库（需要访问 Github） [Y/n]? "
+echo -n "是否要安装 Serial 库（使用GitHub镜像fastgit.org） [Y/n]? "
 read ANSWER
 if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
     echo "Downloading serial......."
     rm -rf /tmp/serial
-    git clone --depth 1 https://github.com/wjwwood/serial.git /tmp/serial
+    git clone --depth 1 https://hub.fastgit.org/wjwwood/serial.git /tmp/serial
 
     echo "Installing serial......."
     mkdir -p /tmp/serial/build
