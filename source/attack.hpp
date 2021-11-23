@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "ArmorFinder.hpp"
-#include "TfClassifier.hpp"
 #include "base.hpp"
 #include "capture/capture.hpp"
 #include "communicator.hpp"
@@ -40,7 +39,6 @@ class AttackBase {
     static std::atomic<int64_t> s_latestTimeStamp;  // 已经发送的帧编号
     static std::deque<Target> s_historyTargets;     // 打击历史, 最新的在头部, [0, 1, 2, 3, ....]
     static ArmorFinder s_armorFinder;
-    static TfClassifier s_tfClassifier;
 
     Target target_box, last_box;  // 目标装甲板
     int drop_frame = 0;           //掉帧系数
@@ -56,7 +54,6 @@ std::mutex AttackBase::s_mutex;
 std::atomic<int64_t> AttackBase::s_latestTimeStamp(0);
 std::deque<Target> AttackBase::s_historyTargets;
 ArmorFinder AttackBase::s_armorFinder;
-TfClassifier AttackBase::s_tfClassifier;
 Kalman AttackBase::kalman;
 decltype(AttackBase::s_sortTracker) AttackBase::s_sortTracker(std::make_unique<sort::SORT>(iou_threshold, max_age, min_hits));
 size_t AttackBase::s_trackId;
@@ -289,7 +286,7 @@ class Attack : AttackBase {
 
         /* 3.通过分类器 */
         m_is.clock("m_classify");
-        s_tfClassifier.m_classify_single_tensor(m_bgr_raw, m_preTargets, m_targets, m_is);
+        // s_tfClassifier.m_classify_single_tensor(m_bgr_raw, m_preTargets, m_targets, m_is);
         m_is.clock("m_classify");
 
         /* 如果已经有更新的一帧发出去了, 则取消本帧的发送 */

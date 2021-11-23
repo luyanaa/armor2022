@@ -23,9 +23,9 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 find_package(Threads REQUIRED)
 
 #======================= Tensorflow ==============================
-include_directories(./tensorflow/include)
-include_directories(./tensorflow/include/src)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/tensorflow)
+# include_directories(./tensorflow/include)
+# include_directories(./tensorflow/include/src)
+# link_directories(${CMAKE_CURRENT_SOURCE_DIR}/tensorflow)
 
 #=========================== Boost ===============================
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -50,14 +50,14 @@ include_directories(source include)
 
 add_executable(attack_dahua main.cpp)
 target_link_libraries(attack_dahua ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
-target_link_libraries(attack_dahua ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_cc.so ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_framework.so.2)
+target_link_libraries(attack_dahua)
 target_link_libraries(attack_dahua /opt/DahuaTech/MVviewer/lib/libMVSDK.so) 
 target_compile_definitions(attack_dahua PRIVATE DAHUA)
 
 
 add_executable(attack_mind main.cpp)
 target_link_libraries(attack_mind ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
-target_link_libraries(attack_mind ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_cc.so ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_framework.so.2)
+target_link_libraries(attack_mind)
 target_link_libraries(attack_mind /opt/mindvision/lib/x64/libMVSDK.so)
 target_compile_definitions(attack_mind PRIVATE MINDVISION)
 
