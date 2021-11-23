@@ -97,7 +97,7 @@ class Communicator {
 
   public:
     //构造函数
-    explicit Communicator() : m_isEnableReceiveGlobalAngle(false), m_WorkMode(RM_AUTO_ATTACK),
+    explicit Communicator() : m_isEnableReceiveGlobalAngle(false), m_WorkMode(RM_WINDMILL_SMALL_CLOCK),
                               m_letStop(false), m_isDisable(false), m_lastTick(cv::getTickCount()),
                               m_currentInterval(-1110) {
         m_gYaws.resize(100);

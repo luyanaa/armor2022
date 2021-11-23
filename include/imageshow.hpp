@@ -242,13 +242,13 @@ class ImageShowClient : ImageShowBase {
         addRect(eventName, rect);
     }
 
-    void addCircle(const cv::String &eventName, const cv::Point &p) {
+    void addCircle(const cv::String &eventName, const cv::Point &p, double radius = 10, int thickness = -1) {
         if (s_mode == 0 || s_mode == 1)
             return;
         cv::Scalar currentColor = m_getCurrentColor();
-        int thickness = 1;
-        cv::circle(m_frame, p, 10, currentColor, -1);
-        m_putMarginText(eventName, currentColor, thickness);
+        int _thickness = 1;
+        cv::circle(m_frame, p, radius, currentColor, thickness);
+        m_putMarginText(eventName, currentColor, _thickness);
     }
 
     /**
