@@ -1,9 +1,9 @@
 
 [attack]
-    attack-color = 'blue' # 击打颜色, ['red', 'blue']
+    attack-color = 'red' # 击打颜色, ['red', 'blue']
 
 [communicator]
-    enable = true
+    enable = false
     serial-port = '/dev/ttyUSB0'
 
 [isServer]
@@ -56,5 +56,3 @@ x = 0.0
 y = 0.0
 pitch = 0.0
 ifAdvance = false  #是否预测空气阻力
-
-
