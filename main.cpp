@@ -138,7 +138,7 @@ int main() {
 
                     switch (mode) {
                         case RM_AUTO_ATTACK:  //跑自瞄
-                            isClient.addText("mode: RM_AUTO_ATTACK");
+                            isClient.addText("mode: 12RM_AUTO_ATTACK");
                             if (attack.run(frame, timeStamp, gYaw, gPitch))
                                 /* 通知主线程显示图像, 有时候这一帧放弃的话就不显示了 */
                                 isClient.show();
