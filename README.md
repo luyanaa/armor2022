@@ -53,6 +53,10 @@
     1. 安装Dahua SDK：提供了可执行文件，直接执行即可 PS:Dahua SDK可能会有更新，经常上网搜一下
     2. 安装MindVision SDK：将mindvision库全部文件拷贝到/opt/mindvision/下面
 5. 拷贝tensorflow头文件和库文件
+6. `sh ncnn.sh`编译ncnn
+7. `makedir -p build`
+8. 从https://tj-robomaster.coding.net/p/armor/files/all把lenet*.bin/.param下到build中
+9. `cd build && cmake .. && make`编译
 
 ---
 

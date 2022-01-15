@@ -24,7 +24,7 @@ find_package(Threads REQUIRED)
 
 #======================= ncnn ==============================
 find_package(Vulkan)
-set(ncnn_DIR /home/sp/Downloads/ncnn/build/install/lib/cmake/ncnn)
+set(ncnn_DIR ${tjsp_attack_2021_SOURCE_DIR}/ncnn/build/install/lib/cmake/ncnn)
 find_package(ncnn)
 find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
