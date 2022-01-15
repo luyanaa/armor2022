@@ -148,7 +148,7 @@ namespace wm
             hit(pitch, yaw);                                                   
             return true;
         }
-        STATE(tensorflow::INFO, "no target", 1)
+
         return false;
     };
 

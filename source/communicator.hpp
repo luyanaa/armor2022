@@ -165,11 +165,12 @@ class Communicator {
      */
     void getGlobalAngle(float *gYaw, float *gPitch, uint8_t delay = 0) {
         if (m_isEnableReceiveGlobalAngle) {
+        
             std::lock_guard<std::mutex> lockGuard(m_mutex);
             *gYaw = m_gYaws[delay];
             *gPitch = m_gPitches[delay];
         } else {
-            *gYaw = 0;
+            *gYaw = 1;
             *gPitch = 0;
         }
     }
@@ -284,7 +285,6 @@ class CommunicatorSerial : public Communicator {
 
     void startReceiveService() override {
         using namespace std::chrono_literals;
-
         if (m_isDisable.load()) return;
         m_receiveThread = std::thread([&]() {
             while (!m_ser.isOpen() && !m_letStop.load()) {

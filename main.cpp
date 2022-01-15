@@ -3,6 +3,7 @@
 //
 //
 
+#include <ctime>
 #include "attack.hpp"
 #include "capture/capture.hpp"
 #include "communicator.hpp"
@@ -22,7 +23,7 @@ int main() {
     communicator.open(0x0477, 0x5620);
 #else
     CommunicatorSerial communicator;
-    communicator.disable(!stConfig.get<bool>("communicator.enable"));
+    //communicator.disable(!stConfig.get<bool>("communicator.enable"));
     communicator.open(stConfig.get<std::string>("communicator.serial-port"));
 #endif
     communicator.startReceiveService();  // 开线程
@@ -77,7 +78,7 @@ int main() {
         case 270: rotate = cv::ROTATE_90_COUNTERCLOCKWISE; break;
         default: PRINT_WARN("[config] cap.rotate: invalid value"); break;
     }
-
+    rotate = cv::ROTATE_180;
     for (int i = 0; i < threadNum; ++i) {
         /**
          * 每个线程都会对attack、windmill进行初始化，之后会根据循环中i的值来为不同到线程分配不同到击打任务（自瞄或者风车击打）
@@ -113,6 +114,7 @@ int main() {
             float gPitch = 0.0;
 
             while (cap->isOpened() && !isServer.isWillExit()) {
+                clock_t beg=std::clock();
                 if (cap->wait_and_get(frame, timeStamp, [&communicator, &gYaw, &gPitch]() {
                         communicator.getGlobalAngle(&gYaw, &gPitch);
                     })) {
@@ -193,16 +195,7 @@ int main() {
                             break;
                     }
 
-                    static std::chrono::high_resolution_clock::time_point beg, end;
-                    static double now_max = 0;
-                    end = std::chrono::high_resolution_clock::now();
-                    auto cost = std::chrono::duration<double, std::milli>((end - beg)).count();
-                    beg = std::chrono::high_resolution_clock::now();
-                    if (cost < 10000)
-                        now_max = std::max(now_max, cost);
-                    std::cout << "@@@@@@@@@@@@@@@ " << cost << " ms\n";
-                    std::cout << "@@@@@@@@@@@@@@@ NOW MAX -> " << now_max << " ms\n";
-                    isClient.clock("run");
+                    std::cout << float(clock()-beg)/CLOCKS_PER_SEC << std::endl;                    
                 } else {
                     PRINT_ERROR("capture wait_and_get() failed once\n");
                 }

@@ -7,11 +7,15 @@
 #include <climits>
 #include <cstdio>
 #include <iostream>
+#include <condition_variable>
 #include <opencv2/opencv.hpp>
+#include <mutex>
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
 
 #include "DebugSocket.hpp"
 #include "base.hpp"
-#include "semaphore.hpp"
 #include "sort/sort.h"
 #include "target.hpp"
 
@@ -27,7 +31,6 @@ class ImageShowBase {
         bool isUpdated = false;
     };
     static std::vector<std::vector<ImageData>> s_imgVec;
-    static Semaphore s_semaphore;
     static std::atomic_int s_currentCallID;
     static std::atomic<double> s_fontSize;
     static std::atomic_int s_mode;
@@ -41,7 +44,6 @@ class ImageShowBase {
 
 std::vector<std::pair<int, cv::Mat>> ImageShowBase::s_frameVec;
 std::vector<std::vector<ImageShowBase::ImageData>> ImageShowBase::s_imgVec;
-Semaphore ImageShowBase::s_semaphore;
 std::atomic_int ImageShowBase::s_currentCallID(0);
 std::atomic<double> ImageShowBase::s_fontSize(1.25);
 std::atomic_int ImageShowBase::s_mode(0);
@@ -51,6 +53,10 @@ std::atomic_bool ImageShowBase::s_isPause(false);
 std::atomic_int ImageShowBase::s_currentKey(-1);
 std::pair<int, double> ImageShowBase::s_cost = std::pair<int, double>{0, 0};
 std::atomic_bool ImageShowBase::s_isAverageCostPrint(false);
+std::condition_variable s_conVar;
+std::atomic_bool m_isWakeUp(false);
+std::atomic_bool m_isWillExit(false);
+
 
 /**
  * ImageShowClient 子线程绘图客户类
@@ -107,9 +113,11 @@ class ImageShowClient : ImageShowBase {
             s_fontSize, color, thickness);
     }
 
+
     /**
      * 输出 clock 计时的结果, 有锁, 保证 client 间输出不互相打断
      */
+    /*
     void m_clockPrint() {
         if (!s_isClockPrintEnable)
             return;
@@ -118,7 +126,7 @@ class ImageShowClient : ImageShowBase {
         double totalCost = 1000.0 * (cv::getTickCount() - m_startClock) / tickFreq;
 
         // 以下有锁, 保证client间输出不被打断
-        std::lock_guard<std::mutex> lock(s_mutex);
+        std::unique_lock<std::mutex> lock(s_mutex);
         printf("\n| thread %d ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|\n", m_id);
         printf("|++++++++++ frame tick %9d ++++++++++|\n", s_frameVec[m_id].first);
         printf("|------ name ------|- per(%%) -|- cost(ms) -|\n");
@@ -143,7 +151,10 @@ class ImageShowClient : ImageShowBase {
                 s_cost.second = 0;
             }
         }
+        lock.unlock();
+        printf("m_clockPrint unlock\n");
     }
+    */
 
   public:
     /**
@@ -491,13 +502,15 @@ class ImageShowClient : ImageShowBase {
             imgData.name = winName;
             imgData.mat = tempImg;
             imgData.isUpdated = true;
-            std::lock_guard<std::mutex> lock(s_semaphore.mutex);
+            std::unique_lock<std::mutex> lock(s_mutex);
             s_imgVec[m_id].emplace_back(imgData);
+            // lock.unlock();
         } else {
             /* 旧窗口 */
-            std::lock_guard<std::mutex> lock(s_semaphore.mutex);
+            std::unique_lock<std::mutex> lock(s_mutex);
             s_imgVec[m_id][i].mat = tempImg;
             s_imgVec[m_id][i].isUpdated = true;
+            // lock.unlock();
         }
     }
 
@@ -540,13 +553,17 @@ class ImageShowClient : ImageShowBase {
 
         while (s_isPause.load() && s_mode != 0)
             std::this_thread::sleep_for(1us);
-        m_clockPrint();
+        // m_clockPrint();
         if (s_mode == 0)
             return;
-        s_semaphore.signal_try([&]() {
+        std::unique_lock<std::mutex> lock(s_mutex, std::try_to_lock);
+        if(lock.owns_lock()){
             cv::swap(s_frameVec[m_id].second, m_frame);
             s_currentCallID.exchange(m_id);
-        });
+            m_isWakeUp.exchange(true);
+            s_conVar.notify_one();        
+            // lock.unlock();
+        }
     }
 };
 
@@ -721,7 +738,8 @@ class ImageShowServer : ImageShowBase {
         }
         printf("[is Server] enter mainloop ...\n");
         while (true) {
-            if (!s_semaphore.wait_for(12s, [&]() {
+            std::unique_lock<std::mutex> lock(s_mutex);
+            if (s_conVar.wait_for(lock, 12s, [&](){return m_isWakeUp.load() || m_isWillExit.load();})){
                     int id = s_currentCallID.load();
                     if (m_layoutRestFlag) {
                         m_createModifiedWindow("main", s_frameVec[s_currentCallID].second.cols,
@@ -755,7 +773,12 @@ class ImageShowServer : ImageShowBase {
                             cv::imshow(_img.name, _img.mat);
                         }
                     }
-                })) {
+                    lock.unlock();
+                    m_isWakeUp.exchange(false);
+                }
+            else{
+                lock.unlock();
+                m_isWakeUp.exchange(false);
                 PRINT_ERROR("[isServer] mainloop timeout\n");
                 break;
             }

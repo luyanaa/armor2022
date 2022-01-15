@@ -55,7 +55,7 @@ read ANSWER
 if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
     echo "Downloading serial......."
     rm -rf /tmp/serial
-    git clone --depth 1 https://github.com/wjwwood/serial.git /tmp/serial
+    git clone --depth 1 https://gitee.com/luyanaa/serial.git /tmp/serial
 
     echo "Installing serial......."
     mkdir -p /tmp/serial/build

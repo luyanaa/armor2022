@@ -62,14 +62,7 @@ class ArmorFinder {
         /* 对contours进行筛选 */
         std::vector<Light> lights;
         for (const auto &_pts : contours) {
-            // 目标不会出现在顶部
-            // if (_pts.at(0).y <= 100) {
-            //     continue;
-            // }
-            // 面积筛选
-            if (_pts.size() < 5) {
-                continue;
-            }
+
             // 长度宽度筛选
             cv::RotatedRect rRect = cv::minAreaRect(_pts);
             if (rRect.size.height < 3 || rRect.size.width < 3) {
@@ -161,12 +154,10 @@ class ArmorFinder {
                     continue;
                 }
                 // 长边短边比
-                if (maxLength > 1.5 * minLength) {
-                    continue;
-                }
-                // if (cv::fastAtan2(cv::abs(crossVec[1]), cv::abs(crossVec[0])) > 25.0) {
-                //     continue;
-                // }
+                //if (maxLength > 1.5 * minLength) {
+                //    continue;
+                //}
+
                 Target target;
                 /* 计算像素坐标 */
                 target.setPixelPts(li.topPt, li.bottomPt, lj.bottomPt, lj.topPt,
@@ -178,25 +169,6 @@ class ArmorFinder {
                  */
                 if (crossVecLength / minLength > 2.5)
                     target.type = TARGET_LARGE;  // 大装甲
-
-                // bool cancel = 0;
-                // for (std::vector<Target>::iterator it = m_preTargets.begin(); it != m_preTargets.end(); it++) {
-                //     const Target &t = *it;
-                //     if (shareEdge(t, target)) {
-                //         cv::Vec2f tLeft = t.pixelPts2f.tl - t.pixelPts2f.bl;
-                //         cv::Vec2f tRight = t.pixelPts2f.tr - t.pixelPts2f.br;
-                //         float angleDiffT = abs(std::atan2(tLeft[0], tLeft[1]) - std::atan2(tRight[0], tRight[1]));
-                //         if (angleDiffT > deltaAngle) {
-                //             m_preTargets.erase(it);
-                //         } else {
-                //             cancel = 1;
-                //         }
-                //         break;
-                //     }
-                // }
-                // if (cancel) {
-                //     continue;
-                // }
 
                 /* 获得扩展区域像素坐标, 若无法扩展则放弃该目标 */
                 if (!target.convert2ExternalPts2f())

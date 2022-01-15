@@ -115,10 +115,10 @@ struct Target {                          // TODO: 结构体太大了，尝试优
      */
     bool convert2ExternalPts2f() {
         //清除掉扩展像素坐标向量的元素，不释放内存
-        cv::Point2f halfDeltaA = (pixelPts2f.tl - pixelPts2f.bl) / 55 * 35;
+        cv::Point2f halfDeltaA = (pixelPts2f.tl - pixelPts2f.bl) / 55 * 30;
         pixelPts2f_Ex.tl = pixelPts2f.tl + halfDeltaA;
         pixelPts2f_Ex.bl = pixelPts2f.bl - halfDeltaA;
-        cv::Point2f halfDeltaB = (pixelPts2f.tr - pixelPts2f.br) / 55 * 35;
+        cv::Point2f halfDeltaB = (pixelPts2f.tr - pixelPts2f.br) / 55 * 30;
         pixelPts2f_Ex.br = pixelPts2f.br - halfDeltaB;
         pixelPts2f_Ex.tr = pixelPts2f.tr + halfDeltaB;
 
@@ -265,7 +265,7 @@ struct Target {                          // TODO: 结构体太大了，尝试优
         yaw = yaw > 180 ? yaw - 360 : yaw;
         rYaw = yaw;
 
-        if (vdistance < 2.0) {
+        /*if (vdistance < 2.0) {
             dd.pitchNaive(bulletSpeed, vdistance, hdistance, finalPitch);
         } else if (dd.pitchAdvance(bulletSpeed, vdistance, hdistance, finalPitch)) {
             // nothing
@@ -273,7 +273,11 @@ struct Target {                          // TODO: 结构体太大了，尝试优
             finalPitch = 0;
             rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
             if (rPitch > 180) rPitch = 360 - rPitch;
-        }
+        }*/
+        finalPitch = 0;
+        rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
+        if (rPitch > 180) rPitch = 360 - rPitch;
+        
         finalPitch = finalPitch * 180 / M_PI;
         rPitch = finalPitch - gPitch;
     }

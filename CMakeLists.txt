@@ -22,10 +22,16 @@ message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 #========================= Threads ===============================
 find_package(Threads REQUIRED)
 
-#======================= Tensorflow ==============================
-include_directories(./tensorflow/include)
-include_directories(./tensorflow/include/src)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/tensorflow)
+#======================= ncnn ==============================
+find_package(Vulkan)
+set(ncnn_DIR /home/sp/Downloads/ncnn/build/install/lib/cmake/ncnn)
+find_package(ncnn)
+find_package(OpenMP REQUIRED)
+if(OPENMP_FOUND)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
 
 #=========================== Boost ===============================
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -47,17 +53,8 @@ include_directories(/opt/mindvision/include)
 #========================= Include ===============================
 include_directories(source include)
 
-
-add_executable(attack_dahua main.cpp)
-target_link_libraries(attack_dahua ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
-target_link_libraries(attack_dahua ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_cc.so ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_framework.so.2)
-target_link_libraries(attack_dahua /opt/DahuaTech/MVviewer/lib/libMVSDK.so) 
-target_compile_definitions(attack_dahua PRIVATE DAHUA)
-
-
 add_executable(attack_mind main.cpp)
-target_link_libraries(attack_mind ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
-target_link_libraries(attack_mind ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_cc.so ${CMAKE_CURRENT_SOURCE_DIR}/tensorflow/libtensorflow_framework.so.2)
+target_link_libraries(attack_mind ncnn ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
 target_link_libraries(attack_mind /opt/mindvision/lib/x64/libMVSDK.so)
 target_compile_definitions(attack_mind PRIVATE MINDVISION)
 

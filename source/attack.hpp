@@ -186,7 +186,8 @@ class Attack : AttackBase {
      */
     void enablePredict(bool enable = true) {
         m_communicator.enableReceiveGlobalAngle(enable);
-        m_isEnablePredict = enable;
+        //m_isEnablePredict = enable;
+        m_isEnablePredict = false;
     }
 
     /**
@@ -198,12 +199,11 @@ class Attack : AttackBase {
      */
     static void getBoundingRect(Target &tar, cv::Rect &rect, cv::Size &size, bool extendFlag = false) {
         rect = cv::boundingRect(s_historyTargets[0].pixelPts2f_Ex.toArray());
-
         if (extendFlag) {
-            rect.x -= int(rect.width * 4);
-            rect.y -= rect.height * 3;
-            rect.width *= 9;
-            rect.height *= 7;
+            rect.x -= int(rect.width/4);
+            rect.y -= rect.height/4;
+            rect.width *= 1.5;
+            rect.height *= 1.5;
 
             rect.width = rect.width >= size.width ? size.width - 1 : rect.width;
             rect.height = rect.height >= size.height ? size.height - 1 : rect.height;
@@ -412,7 +412,7 @@ class Attack : AttackBase {
 
             /* 9.发给电控 */
             m_communicator.send(rYaw, -rPitch, statusA, SEND_STATUS_WM_PLACEHOLDER);
-            PRINT_INFO("[attack] send = %ld", timeStamp);
+            PRINT_INFO("[attack] send = %ld\n", timeStamp);
         }
         if (preLock.owns_lock())
             preLock.unlock();
