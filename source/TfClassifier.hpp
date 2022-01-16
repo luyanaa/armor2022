@@ -43,7 +43,8 @@ class TfClassifier {
         int output = 0;
         for (int j = 0; j < out.w; j++)
             if(f<out[j]) output = j;
-        // PRINT_INFO("[NCNN] Output %f, %f, %f, %f, %f, %f\n", out[0], out[1], out[2], out[3], out[4], out[5]);
+        printf("output: %d\n", output);
+        PRINT_INFO("[NCNN] Output %f, %f, %f, %f, %f, %f\n", out[0], out[1], out[2], out[3], out[4], out[5]);
         // PRINT_INFO("[NCNN] %f ms\n", (clock()-start)/(double)CLOCKS_PER_SEC*1000);
         return output;
     }

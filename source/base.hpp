@@ -101,4 +101,5 @@ struct Light {
     cv::Point2f centerPt;
     double angle = 0; // 灯条倾斜角，范围[0, 180)
     double length = 0;
+    double area_ratio = 0; // 轮廓面积和其最小外接矩形面积之比
 };
