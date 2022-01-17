@@ -54,9 +54,9 @@
     2. 安装MindVision SDK：将mindvision库全部文件拷贝到/opt/mindvision/下面
 5. 拷贝tensorflow头文件和库文件
 6. `sh ncnn.sh`编译ncnn
-7. `makedir -p build`
+7. `makedir -p build && cd build && cmake .. && make`编译
 8. 从https://tj-robomaster.coding.net/p/armor/files/all把lenet*.bin/.param下到build中
-9. `cd build && cmake .. && make`编译
+9. 在build目录中运行`sudo ./attack_mind`
 
 ---
 

@@ -53,7 +53,19 @@ include_directories(/opt/mindvision/include)
 #========================= Include ===============================
 include_directories(source include)
 
-add_executable(attack_mind main.cpp)
+add_executable(attack_mind
+    main.cpp
+    include/sort/sort.cpp
+    include/imageshow.cpp
+    source/base.cpp
+    source/target.cpp
+    source/attack.cpp
+    source/communicator.cpp
+    source/TfClassifier.cpp
+    source/usbio/usbio.cpp
+    source/usbio/utility.cpp
+    source/windmill/Windmill.cpp
+)
 target_link_libraries(attack_mind ncnn ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
 target_link_libraries(attack_mind /opt/mindvision/lib/x64/libMVSDK.so)
 target_compile_definitions(attack_mind PRIVATE MINDVISION)

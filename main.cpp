@@ -8,7 +8,7 @@
 #include "capture/capture.hpp"
 #include "communicator.hpp"
 #include "imageshow.hpp"
-#include <windmill/Windmill.hpp>
+#include "windmill/Windmill.hpp"
 
 int main() {
     using namespace std::chrono_literals;

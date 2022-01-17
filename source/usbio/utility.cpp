@@ -1,4 +1,5 @@
 #include "usbio/utility.hpp"
+#include "iostream"
 
 namespace utility {
     double getSecond(void) {

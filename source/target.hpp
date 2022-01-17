@@ -28,7 +28,7 @@ typedef enum {
     TARGET_LARGE
 } emTargetType;
 
-DDSolver dd = DDSolver();  //DDSolver::get_k1(bulletSpeed,pitch,x,y)
+extern DDSolver dd;
 
 /**
  * 装甲板
