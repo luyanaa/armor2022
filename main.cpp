@@ -23,8 +23,11 @@ int main() {
     communicator.open(0x0477, 0x5620);
 #else
     CommunicatorSerial communicator;
-    //communicator.disable(!stConfig.get<bool>("communicator.enable"));
-    communicator.open(stConfig.get<std::string>("communicator.serial-port"));
+    bool enable_communicator = stConfig.get<bool>("communicator.enable");
+    communicator.disable(!enable_communicator);
+    if (enable_communicator) {
+        communicator.open(stConfig.get<std::string>("communicator.serial-port"));
+    }
 #endif
     communicator.startReceiveService();  // 开线程
 
