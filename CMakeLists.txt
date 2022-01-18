@@ -48,15 +48,15 @@ include_directories(${serial_INCLUDE_DIRS})
 include_directories(/opt/DahuaTech/MVviewer/include)
 
 #======================== MindVision SDK ==============================
-include_directories(/opt/mindvision/include)
+include_directories(sdk/mindvision/include)
 
 #========================= Include ===============================
 include_directories(source include)
 
 add_executable(attack_mind
     main.cpp
-    include/sort/sort.cpp
-    include/imageshow.cpp
+    source/sort/sort.cpp
+    source/imageshow.cpp
     source/base.cpp
     source/target.cpp
     source/attack.cpp

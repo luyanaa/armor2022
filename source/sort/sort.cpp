@@ -1,4 +1,4 @@
-#include "sort.h"
+#include "sort/sort.h"
 
 using namespace sort;
 
