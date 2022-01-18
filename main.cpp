@@ -23,8 +23,11 @@ int main() {
     communicator.open(0x0477, 0x5620);
 #else
     CommunicatorSerial communicator;
-    //communicator.disable(!stConfig.get<bool>("communicator.enable"));
-    communicator.open(stConfig.get<std::string>("communicator.serial-port"));
+    bool enable_communicator = stConfig.get<bool>("communicator.enable");
+    communicator.disable(!enable_communicator);
+    if (enable_communicator) {
+        communicator.open(stConfig.get<std::string>("communicator.serial-port"));
+    }
 #endif
     communicator.startReceiveService();  // 开线程
 
@@ -138,7 +141,7 @@ int main() {
 
                     switch (mode) {
                         case RM_AUTO_ATTACK:  //跑自瞄
-                            isClient.addText("mode: 12RM_AUTO_ATTACK");
+                            isClient.addText("mode: RM_AUTO_ATTACK");
                             if (attack.run(frame, timeStamp, gYaw, gPitch))
                                 /* 通知主线程显示图像, 有时候这一帧放弃的话就不显示了 */
                                 isClient.show();
