@@ -105,7 +105,7 @@ class Communicator {
      * @param extra0
      * @param extra1
      */
-    virtual void send(float rYaw, float rPitch, emSendStatusA extra0, emSendStatusB extra1){};
+    virtual void send(float rYaw, float rPitch, float speed, emSendStatusA extra0, emSendStatusB extra1){};
 
     /**
      * 接收线程, 循环读取电控发来的数据
@@ -160,7 +160,7 @@ class CommunicatorSerial : public Communicator {
 
     void open(const cv::String &portName, uint32_t baudrate = 115200);
 
-    void send(float rYaw, float rPitch, emSendStatusA extra0, emSendStatusB extra1) override;
+    void send(float rYaw, float rPitch, float speed, emSendStatusA extra0, emSendStatusB extra1) override;
 
     void startReceiveService() override;
 };
@@ -184,7 +184,7 @@ class CommunicatorUSB : public Communicator {
         m_usb = new usbio::spUSB(vid, pid);
     }
 
-    void send(float rYaw, float rPitch,emSendStatusA extra0, emSendStatusB extra1) override;
+    void send(float rYaw, float rPitch,float speed, emSendStatusA extra0, emSendStatusB extra1) override;
 
     void startReceiveService() override;
 };

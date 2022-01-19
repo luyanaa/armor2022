@@ -109,7 +109,7 @@ void CommunicatorSerial::open(const cv::String &portName, uint32_t baudrate) {
  * @param extra0 
  * @param extra1 
  */
-void CommunicatorSerial::send(float rYaw, float rPitch, emSendStatusA extra0, emSendStatusB extra1) {
+void CommunicatorSerial::send(float rYaw, float rPitch, float speed, emSendStatusA extra0, emSendStatusB extra1) {
     if (m_isDisable.load()) return;
     if (!m_ser.isOpen()) return;
     /* 刷新结构体 */
@@ -117,6 +117,7 @@ void CommunicatorSerial::send(float rYaw, float rPitch, emSendStatusA extra0, em
     m_frame.timeStamp++;
     m_frame.yaw = rYaw;
     m_frame.pitch = rPitch;
+    m_frame.speed = speed;
     m_frame.extra[0] = extra0;
     m_frame.extra[1] = extra1;
 
@@ -189,12 +190,13 @@ void CommunicatorSerial::startReceiveService() {
     });
 }
 
-void CommunicatorUSB::send(float rYaw, float rPitch,emSendStatusA extra0, emSendStatusB extra1) {
+void CommunicatorUSB::send(float rYaw, float rPitch,float speed, emSendStatusA extra0, emSendStatusB extra1) {
     /* 刷新结构体 */
     if (m_frame.timeStamp > 0xfffe) m_frame.timeStamp = 0;
     m_frame.timeStamp++;
     m_frame.yaw = rYaw;
     m_frame.pitch = rPitch;
+    m_frame.speed = speed;
     m_frame.extra[0] = extra0;
     m_frame.extra[1] = extra1;
 

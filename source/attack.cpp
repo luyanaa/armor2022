@@ -237,6 +237,7 @@ bool Attack::run(cv::Mat &src, int64_t timeStamp, float gYaw, float gPitch) {
     if (preLock.owns_lock() && timeStamp > s_latestTimeStamp.load()) {
         s_latestTimeStamp.exchange(timeStamp);
         float rYaw = 0.0, rPitch = 0.0;  // 相对Yaw和Pitch
+        float rDistance = 0.0;
 
         /* 获得云台全局欧拉角 */
         m_communicator.getGlobalAngle(&gYaw, &gPitch);
@@ -263,6 +264,7 @@ bool Attack::run(cv::Mat &src, int64_t timeStamp, float gYaw, float gPitch) {
             m_is.addText(cv::format("finalPitch %4f", finalPitch));
             rYaw = s_historyTargets[0].rYaw;
             rPitch = s_historyTargets[0].rPitch;
+            rDistance = s_historyTargets[0].ptsInGimbal.z;
             target_box = s_historyTargets[0];
 
             /* 6.预测部分 */
@@ -338,10 +340,11 @@ bool Attack::run(cv::Mat &src, int64_t timeStamp, float gYaw, float gPitch) {
 
         m_is.addText(cv::format("rPitch %.3f", rPitch));
         m_is.addText(cv::format("rYaw   %.3f", rYaw));
+        m_is.addText(cv::format("rDist  %.3f", rDistance));
         m_is.addText(cv::format("statusA   %.3x", statusA));
 
-        /* 9.发给电控 */
-        m_communicator.send(rYaw, -rPitch, statusA, SEND_STATUS_WM_PLACEHOLDER);
+        /* 9.发给电控. 复用speed为距离*/
+        m_communicator.send(rYaw, -rPitch, rDistance, statusA, SEND_STATUS_WM_PLACEHOLDER);
         PRINT_INFO("[attack] send = %ld\n", timeStamp);
     }
     if (preLock.owns_lock())
