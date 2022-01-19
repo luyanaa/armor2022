@@ -1,6 +1,5 @@
 #pragma once
 
-#include "semaphore.hpp"
 #include <atomic>
 #include <condition_variable>
 #include <mutex>

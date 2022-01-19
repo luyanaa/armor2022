@@ -56,7 +56,7 @@ class Kalman {
         assert(deltaT > 0);
         m_lastTimeStamp = timeStamp;
         m_kf.transitionMatrix = (cv::Mat_<float>(4, 4) << 1, 0, deltaT, 0,
-            0, 1, deltaT, 0,
+            0, 1, 0, deltaT,
             0, 0, 1, 0,
             0, 0, 0, 1);
         m_measurement.at<float>(0) = gPitch;

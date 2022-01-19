@@ -28,26 +28,28 @@ fi
 
 echo "Installing packages......."
 apt install -y build-essential cmake git vim libgtk2.0-dev libboost-dev libboost-thread-dev libusb-1.0-0-dev catkin lsb linux-headers-generic libdlib-dev libopencv-dev
-# TODO: snap渠道下载的vscode可能无法启动中文输入法
-snap install code --classic
+# ncnn
+apt install -y build-essential git cmake libprotobuf-dev protobuf-compiler libvulkan-dev vulkan-utils libopencv-dev
 
-# echo ""
-# echo -n "是否要安装相机SDK [Y/n]? "
-# read ANSWER
-# if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
-#     if [[ ! -f /tmp/sdk ]]; then
-#         echo "Downloading Camera SDK......."
-#         pushd "${START_DIR}" >>/dev/null
-#         tar -zxf sdk.tgz -C ~
-#         popd >>/dev/null
-#     fi
-#     echo "Installing Camera SDK......."
-#     pushd /tmp/sdk >>/dev/null
-#     chmod +x dahua/MVviewer_Ver2.2.5_Linux_x86_Build20200910.run
-#     echo "yes\nyes\nyes\n" | ./dahua/MVviewer_Ver2.2.5_Linux_x86_Build20200910.run --nox11
-#     mv mindvision/linuxSDK_V2.1.0.12 /opt/mindvision
-#     popd >>/dev/null
-# fi
+
+echo ""
+echo -n "是否要安装vscode [Y/n]? "
+read ANSWER
+if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
+    # 从官网下载安装vscode
+    wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" -O /tmp/install-vscode
+    dpkg -i /tmp/install-vscode
+    rm /tmp/install-vscode
+fi
+
+echo ""
+echo -n "是否要安装相机SDK [Y/n]? "
+read ANSWER
+if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
+    echo "Installing Camera SDK......."
+    mkdir -p sdk/mindvision
+    tar xzf sdk/linuxSDK_V2.1.0.12.tar.gz  -C sdk/mindvision
+fi
 
 echo ""
 echo -n "是否要安装 Serial 库（使用GitHub镜像fastgit.org） [Y/n]? "
@@ -55,7 +57,7 @@ read ANSWER
 if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
     echo "Downloading serial......."
     rm -rf /tmp/serial
-    git clone --depth 1 https://hub.fastgit.org/wjwwood/serial.git /tmp/serial
+    git clone --depth 1 -b v1.0.1 https://hub.fastgit.org/wjwwood/serial.git /tmp/serial
 
     echo "Installing serial......."
     mkdir -p /tmp/serial/build

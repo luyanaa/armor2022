@@ -1,3 +1,13 @@
+# 环境配置方法
+
+1. ~~配置科学上网环境，保证能访问GitHub~~使用hub.fastgit.org镜像加速，避免直接访问GitHub
+2. 修改Ubuntu软件源，改成速度快的源
+3. 执行env.sh脚本安装需要的软件包和相机sdk：`sudo bash ./env.sh`
+6. `sh ncnn.sh`编译ncnn
+7. `mkdir -p build && cd build && cmake .. && make`编译
+8. 从[文件网盘/自瞄模型](https://tj-robomaster.coding.net/p/armor/files/all/DF4)把模型（*.bin, *.param）下到build中
+9. 在build目录中运行`sudo ./attack_mind`
+
 # 分支说明
 
 | 分支名        | 说明                     |
@@ -43,16 +53,6 @@
 | env.sh         | 环境配置脚本             |                                    |
 | CMakeLists.txt | 编译脚本                 |                                    |
 | README.md      | 说明文档                 |                                    |
-
-# 环境配置方法
-
-1. 配置科学上网环境，保证能访问GitHub
-2. 修改Ubuntu软件源，改成速度快的源
-3. 执行env.sh脚本安装需要的软件包：`sudo ./env.sh`
-4. 配置相机SDK，附带的`sdk.zip`中有
-    1. 安装Dahua SDK：提供了可执行文件，直接执行即可 PS:Dahua SDK可能会有更新，经常上网搜一下
-    2. 安装MindVision SDK：将mindvision库全部文件拷贝到/opt/mindvision/下面
-5. 拷贝tensorflow头文件和库文件
 
 ---
 

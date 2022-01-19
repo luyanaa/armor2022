@@ -48,7 +48,10 @@ class MindVision : public Capture {
         CameraSetAeState(m_hCamera, FALSE);  // 设置手动曝光
         CameraSetExposureTime(
             m_hCamera,
-            stConfig.get<double>("auto.pro-exposure"));  // 设置曝光时间(微秒)
+            4000);
+        // 1500 for blue
+        // 4000 for red
+            //stConfig.get<double>("auto.pro-exposure"));  // 设置曝光时间(微秒)
         double iExposure = 0;
         CameraGetExposureTime(m_hCamera, &iExposure);
         printf("[MindVision] 曝光时间= %.f us\n", iExposure);

@@ -28,7 +28,7 @@ typedef enum {
     TARGET_LARGE
 } emTargetType;
 
-DDSolver dd = DDSolver();  //DDSolver::get_k1(bulletSpeed,pitch,x,y)
+extern DDSolver dd;
 
 /**
  * 装甲板
@@ -115,10 +115,10 @@ struct Target {                          // TODO: 结构体太大了，尝试优
      */
     bool convert2ExternalPts2f() {
         //清除掉扩展像素坐标向量的元素，不释放内存
-        cv::Point2f halfDeltaA = (pixelPts2f.tl - pixelPts2f.bl) / 55 * 35;
+        cv::Point2f halfDeltaA = (pixelPts2f.tl - pixelPts2f.bl) / 55 * 30;
         pixelPts2f_Ex.tl = pixelPts2f.tl + halfDeltaA;
         pixelPts2f_Ex.bl = pixelPts2f.bl - halfDeltaA;
-        cv::Point2f halfDeltaB = (pixelPts2f.tr - pixelPts2f.br) / 55 * 35;
+        cv::Point2f halfDeltaB = (pixelPts2f.tr - pixelPts2f.br) / 55 * 30;
         pixelPts2f_Ex.br = pixelPts2f.br - halfDeltaB;
         pixelPts2f_Ex.tr = pixelPts2f.tr + halfDeltaB;
 
@@ -203,8 +203,8 @@ struct Target {                          // TODO: 结构体太大了，尝试优
          * 相机坐标系定义见上方
          */
         ptsInGimbal.x = ptsInCamera_Mat.at<double>(0, 0);
-        ptsInGimbal.y = ptsInCamera_Mat.at<double>(0, 1) - 110;  // 垂直方向 45mm
-        ptsInGimbal.z = ptsInCamera_Mat.at<double>(0, 2) - 80;       // 前后方向
+        ptsInGimbal.y = ptsInCamera_Mat.at<double>(0, 1) - 0;  // 垂直方向 45mm
+        ptsInGimbal.z = ptsInCamera_Mat.at<double>(0, 2) - 0;       // 前后方向
     }
 
     /**
@@ -265,7 +265,7 @@ struct Target {                          // TODO: 结构体太大了，尝试优
         yaw = yaw > 180 ? yaw - 360 : yaw;
         rYaw = yaw;
 
-        if (vdistance < 2.0) {
+        /*if (vdistance < 2.0) {
             dd.pitchNaive(bulletSpeed, vdistance, hdistance, finalPitch);
         } else if (dd.pitchAdvance(bulletSpeed, vdistance, hdistance, finalPitch)) {
             // nothing
@@ -273,8 +273,16 @@ struct Target {                          // TODO: 结构体太大了，尝试优
             finalPitch = 0;
             rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
             if (rPitch > 180) rPitch = 360 - rPitch;
-        }
-        finalPitch = finalPitch * 180 / M_PI;
-        rPitch = finalPitch - gPitch;
+        }*/
+        //finalPitch = 0;
+        //rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
+        //if (rPitch > 180) rPitch = 360 - rPitch;
+        
+        //finalPitch = finalPitch * 180 / M_PI;
+        //rPitch = finalPitch - gPitch;
+        float pitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
+        pitch = pitch > 180 ? pitch - 360 : pitch;
+        rPitch=pitch;
+
     }
 };  // end struct Target

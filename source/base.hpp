@@ -29,7 +29,8 @@ struct Config {
     inline typename toml::call_traits<T>::return_type get(const std::string &key) const {
         return config.get<T>(key);
     }
-} stConfig("../config.toml");
+};
+extern Config stConfig;
 
 /**
  * 采集的图像的参数
@@ -37,7 +38,8 @@ struct Config {
 struct FrameInfo {
     cv::Size2i size = cv::Size2i(0, 0);      // 硬件返回的图像尺寸
     cv::Point2i offset = cv::Point2i(0, 0);  // 硬件ROI的起始点
-} stFrameInfo;
+};
+extern FrameInfo stFrameInfo;
 
 /**
  * 相机结构体
@@ -57,13 +59,14 @@ struct Camera {
         cv::read(fs["distortion_coefficients"], distCoeffs);
         fs.release();
     }
-} stCamera("../data/camera8mm.xml");
+};
+extern Camera stCamera;
 
 // TODO: 测量, 实际检测灯长度不是55mm
 /**
  * 装甲板物理参数
  */
-struct
+struct ArmorStdFigure
 {
     /**
      * x - Right
@@ -90,7 +93,8 @@ struct
     // 按照上面世界坐标系中，大小装甲板中心的坐标
     cv::Mat smallShootPosition = cv::Mat(cv::Point3d(67.5, -27.5, 0.0));
     cv::Mat largeShootPosition = cv::Mat(cv::Point3d(115, -27.5, 0.0));
-} stArmorStdFigure;
+};
+extern ArmorStdFigure stArmorStdFigure;
 
 /**
  * 灯条结构体
@@ -101,4 +105,5 @@ struct Light {
     cv::Point2f centerPt;
     double angle = 0; // 灯条倾斜角，范围[0, 180)
     double length = 0;
+    double area_ratio = 0; // 轮廓面积和其最小外接矩形面积之比
 };
