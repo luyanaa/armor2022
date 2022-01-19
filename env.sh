@@ -31,16 +31,23 @@ apt install -y build-essential cmake git vim libgtk2.0-dev libboost-dev libboost
 # ncnn
 apt install -y build-essential git cmake libprotobuf-dev protobuf-compiler libvulkan-dev vulkan-utils libopencv-dev
 
-# 从官网下载安装vscode
-wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" -O /tmp/install-vscode
-dpkg -i /tmp/install-vscode
-rm /tmp/install-vscode
+
+echo ""
+echo -n "是否要安装vscode [Y/n]? "
+read ANSWER
+if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
+    # 从官网下载安装vscode
+    wget "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" -O /tmp/install-vscode
+    dpkg -i /tmp/install-vscode
+    rm /tmp/install-vscode
+fi
 
 echo ""
 echo -n "是否要安装相机SDK [Y/n]? "
 read ANSWER
 if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
     echo "Installing Camera SDK......."
+    mkdir -p sdk/mindvision
     tar xzf sdk/linuxSDK_V2.1.0.12.tar.gz  -C sdk/mindvision
 fi
 

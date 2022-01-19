@@ -5,7 +5,7 @@
 3. 执行env.sh脚本安装需要的软件包和相机sdk：`sudo bash ./env.sh`
 6. `sh ncnn.sh`编译ncnn
 7. `mkdir -p build && cd build && cmake .. && make`编译
-8. 从[文件网盘/自瞄模型](https://tj-robomaster.coding.net/p/armor/files/all/DF4)吧模型（*.bin, *.param）下到build中
+8. 从[文件网盘/自瞄模型](https://tj-robomaster.coding.net/p/armor/files/all/DF4)把模型（*.bin, *.param）下到build中
 9. 在build目录中运行`sudo ./attack_mind`
 
 # 分支说明
