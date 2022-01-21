@@ -143,6 +143,7 @@ bool Windmill::detect(const cv::Mat &frame)
 #ifdef DEBUG
     cv::imshow("binaryImage", midImage2);
 #endif
+    //is->addImg("binaryImage", midImage2);
 
     int structElementSize = 2;
     cv::Mat element = cv::getStructuringElement(
@@ -150,7 +151,7 @@ bool Windmill::detect(const cv::Mat &frame)
         cv::Size(2 * structElementSize + 1, 2 * structElementSize + 1),
         cv::Point(structElementSize, structElementSize)
     );
-    cv::dilate(midImage2, midImage2, element);
+    cv::dilate(midImage2, midImage2, element, {-1,-1}, 2);
     structElementSize = 3;
     element = cv::getStructuringElement(
         cv::MORPH_RECT,
@@ -161,6 +162,9 @@ bool Windmill::detect(const cv::Mat &frame)
 #ifdef DEBUG
     cv::imshow("dilate", midImage2);
 #endif
+
+    is->addImg("dilate", midImage2);
+
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierachy;
     cv::findContours(
@@ -218,8 +222,10 @@ bool Windmill::detect(const cv::Mat &frame)
             midImage2,
             perspectMat,
             transform,
-            cv::Size(300, 150)
+            cv::Size(2000, 1000) // 开大点
         );
+        std::cout << dstRect[0] << ' ' << dstRect[1] << ' ' << dstRect[2] << ' ' << dstRect[3] << ' ';
+printf("w:%f, h:%f; w: %d, h:%d\n",width, height, perspectMat.size[0], perspectMat.size[1]);
         testim = perspectMat(cv::Rect(0, 0, width, height));
         cv::Point matchLoc;
         cv::Mat templ;
@@ -262,9 +268,9 @@ bool Windmill::detect(const cv::Mat &frame)
                 std::swap(height, width);
             float area = height * width;
             tgtcenter = tgt.center;
-            is->addCircle("center", tgtcenter);
+            // is->addCircle("center", tgtcenter);
             double radius = distance(tgtcenter, this->center);
-            is->addCircle("circle", this->center, radius, 2);
+            // is->addCircle("circle", this->center, radius, 2);
             std::vector<cv::RotatedRect> target = {tgt};
             is->addRotatedRects("targrt", target);
             
@@ -331,6 +337,7 @@ void Windmill::predictTarget() {
     detectedPts.emplace_back(detectedPt.x + 5, detectedPt.y + 5);
 
     is->addEvent("detected target", detectedPts);
+    is->addEvent("hit target", hitTarget.vertexs);
     return;
 };
 

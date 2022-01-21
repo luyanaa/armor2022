@@ -65,7 +65,7 @@ void ImageShowClient::addRotatedRects(const cv::String &eventName, const std::ve
     if (s_mode == 0 || s_mode == 1)
         return;
     cv::Scalar currentColor = m_getCurrentColor();
-    int thickness = 1;
+    int thickness = 4;
     for (const auto &rRect : rRects) {
         cv::Point2f pts[4];
         rRect.points(pts);
