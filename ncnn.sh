@@ -3,10 +3,9 @@
 # 获取并编译ncnn
 
 
-git clone https://hub.fastgit.org/Tencent/ncnn.git -b 20211208 --depth 1
+git clone https://e.coding.net/tj-robomaster/armor/ncnn.git -b 20211208-mirrored --depth 1
 # 改一下submodule的网址
 cd ncnn
-sed -i 's/github.com/hub.fastgit.org/g' .gitmodules
 git submodule update --init
 mkdir -p build
 cd build
