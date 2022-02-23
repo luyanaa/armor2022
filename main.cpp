@@ -81,7 +81,6 @@ int main() {
         case 270: rotate = cv::ROTATE_90_COUNTERCLOCKWISE; break;
         default: PRINT_WARN("[config] cap.rotate: invalid value"); break;
     }
-    rotate = cv::ROTATE_180;
     for (int i = 0; i < threadNum; ++i) {
         /**
          * 每个线程都会对attack、windmill进行初始化，之后会根据循环中i的值来为不同到线程分配不同到击打任务（自瞄或者风车击打）
