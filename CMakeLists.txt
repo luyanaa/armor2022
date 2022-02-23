@@ -48,7 +48,9 @@ include_directories(${serial_INCLUDE_DIRS})
 include_directories(/opt/DahuaTech/MVviewer/include)
 
 #======================== MindVision SDK ==============================
-include_directories(sdk/mindvision/include)
+add_library(mindvision SHARED IMPORTED)
+set_target_properties(mindvision PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/sdk/mindvision/lib/x64/libMVSDK.so)
+target_include_directories(mindvision INTERFACE sdk/mindvision/include)
 
 #========================= Include ===============================
 include_directories(source include)
@@ -67,6 +69,6 @@ add_executable(attack_mind
     source/windmill/Windmill.cpp
 )
 target_link_libraries(attack_mind ncnn ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boost_LIBRARIES} usb-1.0 dlib)
-target_link_libraries(attack_mind /opt/mindvision/lib/x64/libMVSDK.so)
+target_link_libraries(attack_mind mindvision)
 target_compile_definitions(attack_mind PRIVATE MINDVISION)
 
