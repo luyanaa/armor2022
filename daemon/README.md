@@ -52,11 +52,7 @@ supervisor的使用方法可以自行了解
 CMake配置项目的同时会把目录下的armor-autostart.service.in所需的路径用绝对路径编码。使用下列指令安装并配置自启动：
 
 ```shell
-sudo apt intall xvfb # FIXME: 直接避免开启GUI而不是用xvfb-run
-sudo mkdir -p /usr/local/lib/systemd/system
-sudo cp build/daemon/armor-autostart.service /usr/local/lib/systemd/system
-sudo systemctl daemon-reload
-sudo systemctl reenable armor-autostart
+sudo cmake --build build --target install-autostart
 ```
 
 使用下列指令手动启动：

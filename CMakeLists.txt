@@ -74,3 +74,7 @@ target_compile_definitions(attack_mind PRIVATE MINDVISION)
 
 #========================= systemd ===============================
 configure_file(daemon/armor-autostart.service.in daemon/armor-autostart.service)
+
+add_custom_target(install-autostart
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/daemon/install-armor-autostart.sh
+)
