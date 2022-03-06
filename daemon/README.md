@@ -2,7 +2,7 @@
 
 本目录下为守护进程文件，守护进程用于保证在系统启动/主进程意外崩溃的时候自动启动主进程（执行识别、自瞄等的进程）
 
-目前有两个版本的守护进程实现：
+目前有三个版本的守护进程实现：
 
 ## 1. 2020版
 
@@ -44,3 +44,35 @@ supervisor的使用方法可以自行了解
     2. 重启主进程：`sudo supervisorctl restart attack`
     3. 关闭主进程：`sudo supervisorctl stop attack`
     4. 查看主进程状态：`sudo supervisorctl status attack`
+
+# 2022新版
+
+## 安装
+
+CMake配置项目的同时会把目录下的armor-autostart.service.in所需的路径用绝对路径编码。使用下列指令安装并配置自启动：
+
+```shell
+sudo apt intall xvfb # FIXME: 直接避免开启GUI而不是用xvfb-run
+sudo mkdir -p /usr/local/lib/systemd/system
+sudo cp build/daemon/armor-autostart.service /usr/local/lib/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl reenable armor-autostart
+```
+
+使用下列指令手动启动：
+
+```shell
+sudo systemctl start armor-autostart
+```
+
+使用下列指令暂时关闭自瞄：
+
+```shell
+sudo systemctl stop armor-autostart
+```
+
+使用下列指令关闭自启动：
+
+```shell
+sudo systemctl disable armor-autostart
+```

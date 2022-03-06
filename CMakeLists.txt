@@ -72,3 +72,5 @@ target_link_libraries(attack_mind ncnn ${OpenCV_LIBS} ${serial_LIBRARIES} ${Boos
 target_link_libraries(attack_mind mindvision)
 target_compile_definitions(attack_mind PRIVATE MINDVISION)
 
+#========================= systemd ===============================
+configure_file(daemon/armor-autostart.service.in daemon/armor-autostart.service)
