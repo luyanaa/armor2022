@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 project(tjsp_attack_2021)
 
@@ -49,8 +49,9 @@ include_directories(/opt/DahuaTech/MVviewer/include)
 
 #======================== MindVision SDK ==============================
 add_library(mindvision SHARED IMPORTED)
-set_target_properties(mindvision PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/sdk/mindvision/lib/x64/libMVSDK.so)
-target_include_directories(mindvision INTERFACE sdk/mindvision/include)
+set_target_properties(mindvision PROPERTIES 
+    IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/sdk/mindvision/lib/x64/libMVSDK.so
+    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/sdk/mindvision/include)
 
 #========================= Include ===============================
 include_directories(source include)
@@ -76,5 +77,5 @@ target_compile_definitions(attack_mind PRIVATE MINDVISION)
 configure_file(daemon/armor-autostart.service.in daemon/armor-autostart.service)
 
 add_custom_target(install-autostart
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/daemon/install-armor-autostart.sh
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/daemon/install-armor-autostart.sh
 )

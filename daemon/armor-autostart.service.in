@@ -2,7 +2,7 @@
 Description="Autostart/restart armor"
 [Service]
 WorkingDirectory=${CMAKE_CURRENT_BINARY_DIR}
-ExecStart=xvfb-run ${CMAKE_CURRENT_BINARY_DIR}/attack_mind
+ExecStart=/usr/bin/xvfb-run ${CMAKE_CURRENT_BINARY_DIR}/attack_mind
 Restart=always
 [Install]
 WantedBy=multi-user.target
