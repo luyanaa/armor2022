@@ -52,12 +52,12 @@ if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
 fi
 
 echo ""
-echo -n "是否要安装 Serial 库（使用GitHub镜像fastgit.org） [Y/n]? "
+echo -n "是否要安装 Serial 库 [Y/n]? "
 read ANSWER
 if [ "$ANSWER" = "Y" -o "$ANSWER" = "y" -o "$ANSWER" = "" ]; then
     echo "Downloading serial......."
     rm -rf /tmp/serial
-    git clone --depth 1 -b v1.0.1 https://github.com/wjwwood/serial.git /tmp/serial
+    git clone --depth 1 -b v1.0.1 https://e.coding.net/tj-robomaster/armor/serial.git /tmp/serial
 
     echo "Installing serial......."
     mkdir -p /tmp/serial/build
