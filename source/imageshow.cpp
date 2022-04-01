@@ -65,7 +65,7 @@ void ImageShowClient::addRotatedRects(const cv::String &eventName, const std::ve
     if (s_mode == 0 || s_mode == 1)
         return;
     cv::Scalar currentColor = m_getCurrentColor();
-    int thickness = 1;
+    int thickness = 4;
     for (const auto &rRect : rRects) {
         cv::Point2f pts[4];
         rRect.points(pts);
@@ -98,15 +98,14 @@ void ImageShowClient::addEvent(const cv::String &eventName, const cv::Rect &rect
     addRect(eventName, rect);
 }
 
-void ImageShowClient::addCircle(const cv::String &eventName, const cv::Point &p) {
+void ImageShowClient::addCircle(const cv::String &eventName, const cv::Point &p, double radius, int thickness) {
     if (s_mode == 0 || s_mode == 1)
         return;
     cv::Scalar currentColor = m_getCurrentColor();
-    int thickness = 1;
-    cv::circle(m_frame, p, 10, currentColor, -1);
-    m_putMarginText(eventName, currentColor, thickness);
+    int _thickness = 1;
+    cv::circle(m_frame, p, radius, currentColor, thickness);
+    m_putMarginText(eventName, currentColor, _thickness);
 }
-
 
 void ImageShowClient::addEvent(const cv::String &eventName, const cv::Point &p) {
     addCircle(eventName, p);

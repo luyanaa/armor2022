@@ -7,6 +7,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <algorithm>
+#include <initializer_list>
+#include <utility>
+#include <chrono>
 #include "base.hpp"
 #include "imageshow.hpp"
 #include "Target.hpp"
@@ -17,6 +20,12 @@
 #define RADIUS 740                         // 风车中心到边缘装甲板中心相对值(风车半径相对值)
 #define ANGULAR_VELOCITY 60 / 180.0 * M_PI // 风车角速度
 #define EPS 1e-2                           // 误差值
+
+#include <unistd.h>
+
+#define RED
+//#define DEBUG
+//#define TIME
 
 namespace wm
 {
@@ -82,18 +91,10 @@ namespace wm
                           const cv::String& modelName, ImageShowClient *is,
                           const double maxPitchError, const double maxYawError)
                 : camMatrix(cam), distCoeffs(dist), TvCtoL(TvCtoL), delay(delay), is(is), maxPitchError(maxPitchError), maxYawError(maxYawError) {};
+        
+        double templateMatch(cv::Mat image, cv::Mat tepl, cv::Point &point, int method);
+
 
     };//end of class Windmill
-
-    void set_hsv(int &LowH, int &LowS, int &LowV, int &HighH, int &HighS, int &HighV);
-    
-    bool _judge(cv::Point2f A, cv::Point2f B, cv::Point2f C, cv::Point2f D);
-
-    double _dot(cv::Point2f p, cv::Point2f q);
-
-    void draw_rotated(const cv::Mat &mat, cv::RotatedRect &t, cv::Scalar color);
-
-    void set_hsv(int &LowH, int &LowS, int &LowV, int &HighH, int &HighS, int &HighV);
-
 }
 #endif

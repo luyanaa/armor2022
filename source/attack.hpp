@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "ArmorFinder.hpp"
-#include "TfClassifier.hpp"
 #include "base.hpp"
 #include "capture/capture.hpp"
 #include "communicator.hpp"
@@ -15,6 +14,7 @@
 #include "pid.hpp"
 #include "sort/sort.h"
 #include "target.hpp"
+#include "TfClassifier.hpp"
 
 const unsigned int max_age = 10;
 const unsigned int min_hits = 1;

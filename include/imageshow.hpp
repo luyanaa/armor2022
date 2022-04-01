@@ -177,7 +177,8 @@ class ImageShowClient : ImageShowBase {
 
     void addEvent(const cv::String &eventName, const cv::Rect &rect);
 
-    void addCircle(const cv::String &eventName, const cv::Point &p);
+    void addCircle(const cv::String &eventName, const cv::Point &p, double radius = 10, int thickness = -1);
+
     /**
      * 绘制点
      * @param eventName
