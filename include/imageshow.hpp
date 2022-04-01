@@ -14,7 +14,6 @@
 #include <chrono>
 #include <condition_variable>
 
-#include "DebugSocket.hpp"
 #include "base.hpp"
 #include "sort/sort.h"
 #include "target.hpp"
@@ -307,7 +306,6 @@ class ImageShowServer : ImageShowBase {
     std::vector<ImageShowClient> m_clients;
 
     bool m_layoutRestFlag = true;
-    DebugSocket ds;
 
     struct WinProps {
         cv::Point2i offset = cv::Point2i(0, 0);

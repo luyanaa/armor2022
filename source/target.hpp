@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "base.hpp"
-#include "ddsolver.hpp"
 
 /**
  * 四边形数据结构
@@ -27,8 +26,6 @@ typedef enum {
     TARGET_SMALL,
     TARGET_LARGE
 } emTargetType;
-
-extern DDSolver dd;
 
 /**
  * 装甲板
@@ -265,21 +262,6 @@ struct Target {                          // TODO: 结构体太大了，尝试优
         yaw = yaw > 180 ? yaw - 360 : yaw;
         rYaw = yaw;
 
-        /*if (vdistance < 2.0) {
-            dd.pitchNaive(bulletSpeed, vdistance, hdistance, finalPitch);
-        } else if (dd.pitchAdvance(bulletSpeed, vdistance, hdistance, finalPitch)) {
-            // nothing
-        } else {
-            finalPitch = 0;
-            rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
-            if (rPitch > 180) rPitch = 360 - rPitch;
-        }*/
-        //finalPitch = 0;
-        //rPitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
-        //if (rPitch > 180) rPitch = 360 - rPitch;
-        
-        //finalPitch = finalPitch * 180 / M_PI;
-        //rPitch = finalPitch - gPitch;
         float pitch = cv::fastAtan2(ptsInGimbal.y, cv::sqrt(ptsInGimbal.x * ptsInGimbal.x + ptsInGimbal.z * ptsInGimbal.z));
         pitch = pitch > 180 ? pitch - 360 : pitch;
         rPitch=pitch;
